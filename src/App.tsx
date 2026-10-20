@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
-import { HeroBanner } from './components/HeroBanner';
-import { SentimentOverviewDonut } from './components/SalesOverviewDonut';
-import { RevenueUpdatesBar } from './components/RevenueUpdatesBar';
-import { YearlySalesLine } from './components/YearlySalesLine';
-import { ActiveUserMap } from './components/ActiveUserMap';
-import { PaymentGatewaysCard } from './components/PaymentGatewaysCard';
+import { ExecutiveDashboardView } from './components/views/ExecutiveDashboardView';
+import { SocialListeningView } from './components/views/SocialListeningView';
+import { TrendSentimentView } from './components/views/TrendSentimentView';
+import { GoldMarketView } from './components/views/GoldMarketView';
+import { CompetitorView } from './components/views/CompetitorView';
+import { AIInsightsView } from './components/views/AIInsightsView';
+import { AlertsReportsView } from './components/views/AlertsReportsView';
+import { DataSettingsView } from './components/views/DataSettingsView';
 import { ApifyScraperModal } from './components/ApifyScraperModal';
 import { ViralFeedModal } from './components/ViralFeedModal';
 import { AIAnalysisModal } from './components/AIAnalysisModal';
@@ -20,20 +22,19 @@ export const App: React.FC = () => {
   // 1. Authentication State
   const [currentUser, setCurrentUser] = useState<AuthUser | null>(AuthService.getSession());
 
-  // 2. Dashboard & Navigation State
-  const [activeTab, setActiveTab] = useState<string>('overview');
+  // 2. Navigation State matching the 8 requested menus
+  const [activeTab, setActiveTab] = useState<string>('executive');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isScraperOpen, setIsScraperOpen] = useState<boolean>(false);
   const [isFeedOpen, setIsFeedOpen] = useState<boolean>(false);
   const [isAIOpen, setIsAIOpen] = useState<boolean>(false);
   const [isAIRefreshing, setIsAIRefreshing] = useState<boolean>(false);
 
-  // 3. Live Production Data from Supabase (Zero mock data default)
+  // 3. Live Production Data from Supabase
   const [posts, setPosts] = useState<SocialTrendPost[]>([]);
   const [hashtags, setHashtags] = useState<HashtagStat[]>([]);
   const [supabaseConnected, setSupabaseConnected] = useState<boolean>(true);
   const [latencyMs, setLatencyMs] = useState<number>(45);
-  const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
 
   // 4. AI Analysis State
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysisResult>(() => 
@@ -42,7 +43,6 @@ export const App: React.FC = () => {
 
   // Load Real Data from Supabase
   const loadSupabaseData = async () => {
-    setIsLoadingData(true);
     const conn = await SupabaseService.checkConnection();
     setSupabaseConnected(conn.connected);
     if (conn.latencyMs > 0) setLatencyMs(conn.latencyMs);
@@ -59,7 +59,6 @@ export const App: React.FC = () => {
     if (dbHashtags && dbHashtags.length > 0) {
       setHashtags(dbHashtags);
     }
-    setIsLoadingData(false);
   };
 
   useEffect(() => {
@@ -74,35 +73,12 @@ export const App: React.FC = () => {
     setCurrentUser(null);
   };
 
-  // If not logged in, render the dedicated LoginPage
+  // If not logged in, render LoginPage
   if (!currentUser) {
     return <LoginPage onLoginSuccess={(user) => setCurrentUser(user)} />;
   }
 
-  // Calculate Real-Time Production Trend Metrics from Supabase Data
-  const totalViewsNum = posts.reduce((acc, p) => acc + p.views, 0);
-  const tiktokViewsNum = posts.filter(p => p.platform === 'tiktok').reduce((acc, p) => acc + p.views, 0);
-  const igViewsNum = posts.filter(p => p.platform === 'instagram').reduce((acc, p) => acc + p.views, 0);
-  const buyIntentNum = posts.filter(p => p.sentiment === 'bullish_buy').reduce((acc, p) => acc + p.views, 0);
-  const sellIntentNum = posts.filter(p => p.sentiment === 'bearish_sell').reduce((acc, p) => acc + p.views, 0);
-
-  const formatShort = (n: number) => {
-    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-    if (n >= 1_000) return (n / 1_000).toFixed(0) + 'k';
-    return n.toString();
-  };
-
-  const tiktokPercent = totalViewsNum > 0 ? Math.round((tiktokViewsNum / totalViewsNum) * 100) : 40;
-  const igPercent = totalViewsNum > 0 ? Math.round((igViewsNum / totalViewsNum) * 100) : 25;
-  const buyPercent = totalViewsNum > 0 ? Math.round((buyIntentNum / totalViewsNum) * 100) : 20;
-  const sellPercent = totalViewsNum > 0 ? Math.round((sellIntentNum / totalViewsNum) * 100) : 15;
-
-  const bullishRatio = buyIntentNum + sellIntentNum > 0
-    ? Math.round((buyIntentNum / (buyIntentNum + sellIntentNum)) * 100)
-    : 68;
-  const bearishRatio = 100 - bullishRatio;
-
-  // Search Filter
+  // Filter posts based on global search
   const filteredPosts = posts.filter(p => {
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
@@ -113,8 +89,7 @@ export const App: React.FC = () => {
     );
   });
 
-  const handleScrapeSuccess = async (newPosts: SocialTrendPost[]) => {
-    // Reload freshly saved data from Supabase
+  const handleScrapeSuccess = async () => {
     await loadSupabaseData();
     setIsScraperOpen(false);
     setIsFeedOpen(true);
@@ -125,26 +100,30 @@ export const App: React.FC = () => {
     setTimeout(() => {
       setAiAnalysis(AIAnalysisService.analyzeTrends(posts));
       setIsAIRefreshing(false);
-    }, 600);
+    }, 500);
+  };
+
+  const handleExportCSV = () => {
+    const csvData = posts.map(p => `"${p.author}","${p.platform}","${p.views}","${p.likes}","${p.goldCategory}","${p.sentiment}","${p.postUrl}"`).join('\n');
+    const blob = new Blob([`Author,Platform,Views,Likes,Category,Sentiment,URL\n${csvData}`], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gold_trends_data_${Date.now()}.csv`;
+    a.click();
   };
 
   return (
     <div className="min-h-screen bg-[#EEF2F6] flex">
-      {/* 1. Left Sidebar Navigation */}
+      {/* 1. Left Sidebar Navigation with Numbered Menus */}
       <Sidebar
         activeTab={activeTab}
-        setActiveTab={(tab) => {
-          setActiveTab(tab);
-          if (tab === 'feed') setIsFeedOpen(true);
-          if (tab === 'sentiment') setIsAIOpen(true);
-        }}
-        openScraperModal={() => setIsScraperOpen(true)}
-        openAIModal={() => setIsAIOpen(true)}
+        setActiveTab={setActiveTab}
         currentUser={currentUser}
         onLogout={handleLogout}
       />
 
-      {/* 2. Main Trend Analytics Dashboard */}
+      {/* 2. Main Content Container */}
       <main className="flex-1 p-6 md:p-8 max-w-[1400px] mx-auto overflow-x-hidden">
         {/* Top Header */}
         <Header
@@ -156,92 +135,76 @@ export const App: React.FC = () => {
           latencyMs={latencyMs}
         />
 
-        {/* Hero Section: Social Buzz & Trend Velocity Banner with 5 Metric Cards */}
-        <HeroBanner
-          totalReach={totalViewsNum > 0 ? formatShort(totalViewsNum) : '34.3M'}
-          tiktokViews={tiktokViewsNum > 0 ? formatShort(tiktokViewsNum) : '13.7M'}
-          tiktokPercent={`(${tiktokPercent}%)`}
-          instagramViews={igViewsNum > 0 ? formatShort(igViewsNum) : '8.6M'}
-          instagramPercent={`(${igPercent}%)`}
-          buyingIntent={buyIntentNum > 0 ? formatShort(buyIntentNum) : '6.9M'}
-          buyingPercent={`(${buyPercent}%)`}
-          buybackBuzz={sellIntentNum > 0 ? formatShort(sellIntentNum) : '5.1M'}
-          buybackPercent={`(${sellPercent}%)`}
-        />
-
-        {/* Row 1: Three Visual Analytics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          {/* Card 1: Market Sentiment Ratio (Donut Chart) */}
-          <SentimentOverviewDonut
-            bullishPercent={bullishRatio}
-            bearishPercent={bearishRatio}
-            bullishLabel="Minat Beli Emas (Akumulasi)"
-            bearishLabel="Tekanan Jual (Buyback Likuidasi)"
-            onExplore={() => setIsAIOpen(true)}
+        {/* Dynamic View Rendering based on Numbered Menu Selection */}
+        {activeTab === 'executive' && (
+          <ExecutiveDashboardView
+            posts={filteredPosts}
+            hashtags={hashtags}
+            onOpenFeed={() => setIsFeedOpen(true)}
+            onOpenAI={() => setIsAIOpen(true)}
+            onExport={handleExportCSV}
           />
+        )}
 
-          {/* Card 2: Daily Buzz Momentum (Bar Chart) */}
-          <RevenueUpdatesBar
-            title="Daily Buzz Momentum"
-            onExplore={() => setIsFeedOpen(true)}
+        {activeTab === 'listening' && (
+          <SocialListeningView
+            posts={filteredPosts}
+            hashtags={hashtags}
+            onTriggerScraper={() => setIsScraperOpen(true)}
           />
+        )}
 
-          {/* Card 3: Trend Velocity & Virality Rate (Smooth Wave Line) */}
-          <YearlySalesLine
-            title="Trend Velocity & Virality"
-            firstAmount="5.4k/hari"
-            firstYear="2024 (Akumulasi)"
-            secondAmount="4.4k/hari"
-            secondYear="2023 (Baseline)"
-            onExplore={() => setIsFeedOpen(true)}
+        {activeTab === 'sentiment' && (
+          <TrendSentimentView
+            posts={filteredPosts}
           />
-        </div>
+        )}
 
-        {/* Row 2: Audience Geo Map & Trending Hashtags Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Card 4: Regional Audience Buzz Map (2 Cols wide) */}
-          <div className="lg:col-span-2">
-            <ActiveUserMap
-              percentageGrowth="+8.06% Keaktifan vs Bulan Lalu"
-              totalUsers="23,214"
-              label="Total Kreator & Audiens Emas Aktif"
-              onExport={() => {
-                const csvData = posts.map(p => `"${p.author}","${p.platform}","${p.views}","${p.likes}","${p.goldCategory}","${p.sentiment}","${p.postUrl}"`).join('\n');
-                const blob = new Blob([`Author,Platform,Views,Likes,Category,Sentiment,URL\n${csvData}`], { type: 'text/csv' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `gold_trends_prod_data_${Date.now()}.csv`;
-                a.click();
-              }}
-            />
-          </div>
+        {activeTab === 'market' && (
+          <GoldMarketView />
+        )}
 
-          {/* Card 5: Top Trending Hashtags (1 Col wide) */}
-          <div className="lg:col-span-1">
-            <PaymentGatewaysCard
-              hashtags={hashtags}
-              onViewAll={() => setIsFeedOpen(true)}
-            />
-          </div>
-        </div>
+        {activeTab === 'competitor' && (
+          <CompetitorView />
+        )}
+
+        {activeTab === 'ai_insights' && (
+          <AIInsightsView
+            analysis={aiAnalysis}
+            posts={filteredPosts}
+            onRefresh={handleRefreshAI}
+            isRefreshing={isAIRefreshing}
+          />
+        )}
+
+        {activeTab === 'alerts' && (
+          <AlertsReportsView
+            posts={filteredPosts}
+            onExportCSV={handleExportCSV}
+          />
+        )}
+
+        {activeTab === 'settings' && (
+          <DataSettingsView
+            onTriggerScraper={() => setIsScraperOpen(true)}
+            latencyMs={latencyMs}
+          />
+        )}
       </main>
 
-      {/* Scraper Configuration & Trigger Modal */}
+      {/* Modals */}
       <ApifyScraperModal
         isOpen={isScraperOpen}
         onClose={() => setIsScraperOpen(false)}
         onScrapeSuccess={handleScrapeSuccess}
       />
 
-      {/* Scraped Viral Feed Modal */}
       <ViralFeedModal
         isOpen={isFeedOpen}
         onClose={() => setIsFeedOpen(false)}
         posts={filteredPosts}
       />
 
-      {/* AI Market & Trend Intelligence Modal */}
       <AIAnalysisModal
         isOpen={isAIOpen}
         onClose={() => setIsAIOpen(false)}

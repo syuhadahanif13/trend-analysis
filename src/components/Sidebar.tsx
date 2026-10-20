@@ -87,8 +87,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="bg-slate-50/80 p-3 rounded-2xl border border-slate-100/80">
           <div className="flex items-center gap-3 mb-2.5">
             <img 
-              src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'} 
+              src={currentUser?.avatar || 'https://ui-avatars.com/api/?name=Admin+Raja+Emas&background=D97706&color=ffffff&bold=true&rounded=true&size=128'} 
               alt="User Avatar" 
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src = 'https://ui-avatars.com/api/?name=Admin+Raja+Emas&background=D97706&color=ffffff&bold=true&rounded=true&size=128';
+              }}
               className="w-9 h-9 rounded-full object-cover border border-white shadow-2xs"
             />
             <div className="overflow-hidden">

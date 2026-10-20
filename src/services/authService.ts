@@ -17,7 +17,7 @@ export class AuthService {
         username: 'admin',
         role: 'Administrator',
         name: 'Raja Emas Admin',
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+        avatar: 'https://ui-avatars.com/api/?name=Admin+Raja+Emas&background=D97706&color=ffffff&bold=true&rounded=true&size=128',
         token: 'token_' + Math.random().toString(36).substring(2),
         loggedInAt: new Date().toISOString()
       };

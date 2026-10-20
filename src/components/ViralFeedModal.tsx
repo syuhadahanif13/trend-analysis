@@ -159,8 +159,11 @@ export const ViralFeedModal: React.FC<ViralFeedModalProps> = ({
                   {/* Author */}
                   <div className="flex items-center gap-2 mb-2">
                     <img
-                      src={post.authorAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'}
+                      src={post.authorAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=D97706&color=ffffff&bold=true&rounded=true&size=128`}
                       alt={post.author}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=D97706&color=ffffff&bold=true&rounded=true&size=128`;
+                      }}
                       className="w-7 h-7 rounded-full object-cover border border-slate-200"
                     />
                     <div className="overflow-hidden">

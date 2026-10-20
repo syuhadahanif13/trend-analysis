@@ -156,8 +156,11 @@ export const SocialListeningView: React.FC<SocialListeningViewProps> = ({
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <img
-                    src={post.authorAvatar}
+                    src={post.authorAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=D97706&color=ffffff&bold=true&rounded=true&size=128`}
                     alt={post.author}
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(post.author)}&background=D97706&color=ffffff&bold=true&rounded=true&size=128`;
+                    }}
                     className="w-8 h-8 rounded-full object-cover border border-slate-100"
                   />
                   <div>

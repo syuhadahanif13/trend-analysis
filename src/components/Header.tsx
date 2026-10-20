@@ -1,11 +1,11 @@
 import React from 'react';
-import { Search, Mail, Bell, Settings, Sparkles, RefreshCw, Database, Bot } from 'lucide-react';
+import { Search, Mail, Bell, Settings, Sparkles, RefreshCw, Database, Lightbulb } from 'lucide-react';
 
 interface HeaderProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   openScraperModal: () => void;
-  openAIModal: () => void;
+  openInsightsModal: () => void;
   isScraping?: boolean;
   supabaseConnected?: boolean;
   latencyMs?: number;
@@ -15,7 +15,7 @@ export const Header: React.FC<HeaderProps> = ({
   searchQuery,
   setSearchQuery,
   openScraperModal,
-  openAIModal,
+  openInsightsModal,
   isScraping = false,
   supabaseConnected = true,
   latencyMs = 45
@@ -59,13 +59,13 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-2.5">
-        {/* AI Analysis Button */}
+        {/* Strategic Market Insights Button */}
         <button
-          onClick={openAIModal}
+          onClick={openInsightsModal}
           className="flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-full text-xs font-bold shadow-sm shadow-amber-500/20 transition-all active:scale-95 cursor-pointer"
         >
-          <Bot className="w-3.5 h-3.5" />
-          <span>AI Insights</span>
+          <Lightbulb className="w-3.5 h-3.5" />
+          <span>Market Insights</span>
         </button>
 
         {/* Scraper Trigger Action Button */}
@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-1.5 ml-1">
           <button 
             title="Pemberitahuan Tren Emas"
-            className="relative w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 shadow-sm transition-all"
+            className="relative w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 shadow-sm transition-all cursor-pointer"
           >
             <Bell className="w-4 h-4" />
             <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-blue-600 rounded-full" />
@@ -94,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           <button 
             title="Pengaturan"
-            className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 shadow-sm transition-all"
+            className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 shadow-sm transition-all cursor-pointer"
           >
             <Settings className="w-4 h-4" />
           </button>

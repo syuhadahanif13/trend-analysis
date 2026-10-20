@@ -5,7 +5,7 @@ import {
   PieChart, 
   DollarSign, 
   Store, 
-  Bot, 
+  Lightbulb, 
   Bell, 
   Settings, 
   LogOut,
@@ -32,7 +32,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'sentiment', number: '03', title: 'Trend & Sentiment Analysis', icon: PieChart },
     { id: 'market', number: '04', title: 'Gold Market Intelligence', icon: DollarSign },
     { id: 'competitor', number: '05', title: 'Competitor Intelligence', icon: Store },
-    { id: 'ai_insights', number: '07', title: 'AI Insights & Recommendations', icon: Bot },
+    { id: 'insights', number: '07', title: 'Strategic Insights & Action', icon: Lightbulb },
     { id: 'alerts', number: '08', title: 'Alerts & Reports', icon: Bell },
     { id: 'settings', number: '09', title: 'Data Sources & Settings', icon: Settings },
   ];

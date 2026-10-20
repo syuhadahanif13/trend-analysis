@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, AlertCircle, ArrowUpRight, Flame, CheckCircle2, Scale, ExternalLink } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { HeroBanner } from '../HeroBanner';
 import { SentimentOverviewDonut } from '../SalesOverviewDonut';
 import { RevenueUpdatesBar } from '../RevenueUpdatesBar';
@@ -12,7 +12,7 @@ interface ExecutiveDashboardViewProps {
   posts: SocialTrendPost[];
   hashtags: HashtagStat[];
   onOpenFeed: () => void;
-  onOpenAI: () => void;
+  onOpenInsights: () => void;
   onExport: () => void;
 }
 
@@ -20,7 +20,7 @@ export const ExecutiveDashboardView: React.FC<ExecutiveDashboardViewProps> = ({
   posts,
   hashtags,
   onOpenFeed,
-  onOpenAI,
+  onOpenInsights,
   onExport
 }) => {
   const totalViewsNum = posts.reduce((acc, p) => acc + p.views, 0);
@@ -63,8 +63,8 @@ export const ExecutiveDashboardView: React.FC<ExecutiveDashboardViewProps> = ({
           </div>
         </div>
         <button
-          onClick={onOpenAI}
-          className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-colors shrink-0"
+          onClick={onOpenInsights}
+          className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-colors shrink-0 cursor-pointer"
         >
           Lihat Rekomendasi
         </button>
@@ -91,7 +91,7 @@ export const ExecutiveDashboardView: React.FC<ExecutiveDashboardViewProps> = ({
           bearishPercent={bearishRatio}
           bullishLabel="Minat Beli Emas (Akumulasi)"
           bearishLabel="Tekanan Jual (Buyback Likuidasi)"
-          onExplore={onOpenAI}
+          onExplore={onOpenInsights}
         />
 
         {/* Card 2: Interaksi & Lonjakan Percakapan Harian */}

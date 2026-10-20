@@ -20,44 +20,71 @@ Tampilan antarmuka dirancang presisi sesuai referensi gambar: modern, rounded, s
 
 ---
 
-## Fitur Utama
+## Struktur Menu & Modul Sistem
 
-1. Dashboard Visual Trend Analytics:
-   - Sidebar Navigasi: Menu Analytics (Trend Overview, Viral Reels & TikTok, Hashtag Intelligence, AI Market Insights), Market Radar (Toko & Brand Watch, Sentimen Jual-Beli, Regional Buzz Map), Data Engine (Apify Scraper), dan profil admin dengan opsi logout.
-   - Header: Supabase Status Pill, Search bar rounded, tombol AI Market Insights, dan tombol Sync Apify Trends.
-   - Hero Social Buzz & Trend Velocity: Banner latar 3D ribbon bergelombang dengan 5 kartu metrik:
-     - Total Social Reach: 34.3M
-     - By TikTok Reels: 13.7M (40%)
-     - By Instagram Reels: 8.6M (25%)
-     - Minat Beli (Bullish): 6.9M (20%)
-     - Buyback & Jual (Bearish): 5.1M (15%)
-   - Market Sentiment Ratio: Donut chart rasio Bullish (Minat Beli Emas) vs Bearish (Tekanan Jual / Buyback Likuidasi).
-   - Daily Buzz Momentum: Bar chart vertikal aktivitas interaksi harian konten emas.
-   - Trend Velocity & Virality Rate: Smooth wave line chart perbandingan virality rate 2024 vs 2023.
-   - Regional Audience Buzz: Peta sebaran interaksi sentra pasar emas (Jakarta Cikini, Surabaya, Bandung, Medan, Makassar, Bali) dengan opsi Export CSV.
-   - Top Trending Hashtags: Tagar terpopuler (#hargaemas, #emasantam, #investasiemas) dengan volume views, pertumbuhan, dan tombol galeri video viral.
+01. Executive Dashboard
+    Ringkasan tren, sentimen, peluang bisnis, dan alert penting dalam satu layar.
+    - Social Trend Score
+    - Sentimen positif, negatif, dan netral
+    - Topik emas yang sedang viral
+    - Tren harga emas vs percakapan sosial
+    - Peluang buyback dan penjualan
 
-2. Integrasi Apify Actor subimpact/social-trends-hashtag-scraper:
-   - Mendukung input Apify API Token langsung dari modal UI.
-   - Pengaturan hashtag target: #hargaemas, #emasantam, #jualbeliemas, #tokoemas, #investasiemas, #emasbatangan, #buybackemas, #cincintunangan.
-   - Menghubungkan ke API run-sync Apify untuk ekstraksi TikTok & Instagram Reels.
-   - Sinkronisasi otomatis ke database Supabase pada tabel trend_posts dan scraper_runs.
+02. Social Listening
+    Memantau percakapan publik tentang emas di berbagai kanal.
+    - Keyword monitoring
+    - Hashtag dan mention tracker
+    - Trending topics
+    - Volume percakapan per platform
+    - Deteksi lonjakan percakapan (spike detection)
 
-3. AI Market & Trend Intelligence:
-   - Analisis sentimen otomatis (rasio minat beli vs tekanan buyback).
-   - Ringkasan eksekutif AI mengenai sentimen publik terhadap harga emas.
-   - Identifikasi pemicu percakapan teratas di media sosial.
-   - Generator ide konten viral TikTok & Reels (hook 3 detik, alur konsep, rekomendasi audio, dan hashtags).
-   - Rekomendasi strategis untuk pedagang toko emas dan investor.
+03. Trend & Sentiment Analysis
+    Memahami apa yang dibicarakan masyarakat, bagaimana perasaannya, dan ke mana arah tren bergerak.
+    - Sentiment analysis Bahasa Indonesia
+    - Topic clustering
+    - Emerging trends
+    - Analisis alasan membeli atau menjual emas
+    - Prediksi tren jangka pendek dengan tingkat keyakinan
 
-4. Autentikasi Pengguna:
-   - Halaman login minimalis tanpa elemen yang tidak diperlukan.
-   - Akun: admin / m@juterusrajaemas.
+04. Gold Market Intelligence
+    Menghubungkan tren sosial dengan konteks pasar emas.
+    - Harga emas terkini dan historis
+    - Tren minat buyback vs pembelian
+    - Korelasi harga dan percakapan
+    - Analisis kata kunci seperti "harga emas hari ini"
+    - Indikator peluang pasar
 
-5. Galeri Konten Viral:
-   - Filter berdasarkan platform (TikTok / Instagram Reels).
-   - Filter berdasarkan kategori emas (Antam, Perhiasan, Toko Emas, Buyback, Edukasi).
-   - Link postingan valid yang langsung terhubung ke konten resmi.
+05. Competitor Intelligence
+    Memantau posisi merek dan aktivitas kompetitor di ruang digital.
+    - Share of Voice
+    - Perbandingan engagement
+    - Tren kampanye kompetitor
+    - Konten dengan performa tertinggi
+    - Perbandingan sentimen merek
+
+07. Strategic Insights & Action
+    Mengubah data mentah menjadi saran tindakan yang bisa dijalankan.
+    - Daily brief pasar emas
+    - Rekomendasi konten promosi
+    - Ide kampanye buyback atau penjualan
+    - Deteksi risiko reputasi
+    - Tanya data menggunakan bahasa natural
+
+08. Alerts & Reports
+    Mengirimkan informasi penting secara otomatis kepada pengambil keputusan.
+    - Alert melalui dashboard dan email
+    - Laporan harian, mingguan, dan bulanan
+    - Scheduled reports
+    - Eskalasi isu viral
+    - Ekspor CSV, Excel, dan PDF
+
+09. Data Sources & Settings
+    Mengatur sumber data, keyword, pengguna, dan tata kelola sistem.
+    - Konfigurasi API dan sumber data
+    - Master keyword dan brand
+    - Pengelolaan akun kompetitor
+    - Hak akses berdasarkan jabatan
+    - Audit log dan status integrasi
 
 ---
 

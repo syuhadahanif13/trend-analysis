@@ -1,6 +1,6 @@
 import { SocialTrendPost } from '../types';
 
-export interface AIAnalysisResult {
+export interface MarketInsightsResult {
   generatedAt: string;
   totalPostsAnalyzed: number;
   marketSentiment: {
@@ -25,11 +25,11 @@ export interface AIAnalysisResult {
   }[];
 }
 
-export class AIAnalysisService {
+export class MarketInsightsService {
   /**
-   * Run AI Trend & Market Analysis based on current active posts from Supabase
+   * Run Trend & Market Analysis based on current active posts from Supabase
    */
-  static analyzeTrends(posts: SocialTrendPost[]): AIAnalysisResult {
+  static analyzeTrends(posts: SocialTrendPost[]): MarketInsightsResult {
     const total = posts.length || 1;
     const bullish = posts.filter(p => p.sentiment === 'bullish_buy').length;
     const bearish = posts.filter(p => p.sentiment === 'bearish_sell').length;
@@ -39,7 +39,7 @@ export class AIAnalysisService {
     const bearishPercent = Math.round((bearish / total) * 100);
     const neutralPercent = 100 - bullishPercent - bearishPercent;
 
-    let dominantSignal: AIAnalysisResult['marketSentiment']['dominantSignal'] = 'STRONG_BUY_INTENT';
+    let dominantSignal: MarketInsightsResult['marketSentiment']['dominantSignal'] = 'STRONG_BUY_INTENT';
     let headline = 'Minat Beli Emas Tinggi — Didorong Tren Hedging & Pembelian Gramasi Kecil';
 
     if (bearishPercent > bullishPercent) {
@@ -50,7 +50,6 @@ export class AIAnalysisService {
       headline = 'Fase Edukasi Pasar — Netizen Fokus Mempelajari Keaslian & Komparasi Vendor Emas';
     }
 
-    // Extract keyword triggers from real post captions
     const keywordBank: { [key: string]: { count: number; sentiment: string } } = {
       'Antam LM': { count: 0, sentiment: 'Beli' },
       'Buyback Tanpa Potongan': { count: 0, sentiment: 'Jual/Tukar' },

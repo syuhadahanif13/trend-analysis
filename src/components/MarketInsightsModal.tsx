@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { X, Sparkles, TrendingUp, Lightbulb, Target, RefreshCw, CheckCircle2, Video, Tag } from 'lucide-react';
-import { AIAnalysisResult } from '../services/aiAnalysisService';
+import { X, TrendingUp, Lightbulb, RefreshCw, CheckCircle2, Video, Tag } from 'lucide-react';
+import { MarketInsightsResult } from '../services/marketInsightsService';
 
-interface AIAnalysisModalProps {
+interface MarketInsightsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  analysis: AIAnalysisResult;
+  analysis: MarketInsightsResult;
   onRefresh: () => void;
   isRefreshing?: boolean;
 }
 
-export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
+export const MarketInsightsModal: React.FC<MarketInsightsModalProps> = ({
   isOpen,
   onClose,
   analysis,
@@ -28,15 +28,15 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
         <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-gradient-to-r from-blue-50/60 via-indigo-50/40 to-amber-50/40 shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-blue-500/25">
-              <Sparkles className="w-6 h-6" />
+              <Lightbulb className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-bold text-slate-800">
-                  AI Trend & Market Intelligence (Emas)
+                  Market & Strategic Intelligence (Emas)
                 </h3>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
-                  AI Intelligence Engine
+                  Analytics System
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -49,15 +49,15 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
             <button
               onClick={onRefresh}
               disabled={isRefreshing}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all active:scale-95 disabled:opacity-50"
-              title="Perbarui Analisis AI"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+              title="Perbarui Analisis"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : 'text-slate-500'}`} />
-              <span>{isRefreshing ? 'Menganalisis...' : 'Refresh AI'}</span>
+              <span>{isRefreshing ? 'Menganalisis...' : 'Refresh Analisis'}</span>
             </button>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full hover:bg-slate-200/60 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors"
+              className="w-8 h-8 rounded-full hover:bg-slate-200/60 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -68,7 +68,7 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
         <div className="px-6 py-2.5 border-b border-slate-100 bg-white flex items-center gap-2 shrink-0">
           <button
             onClick={() => setActiveTab('summary')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'summary'
                 ? 'bg-blue-50 text-blue-600 font-bold'
                 : 'text-slate-500 hover:text-slate-800'
@@ -78,7 +78,7 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('ideas')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'ideas'
                 ? 'bg-blue-50 text-blue-600 font-bold'
                 : 'text-slate-500 hover:text-slate-800'
@@ -88,7 +88,7 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
           </button>
           <button
             onClick={() => setActiveTab('strategy')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               activeTab === 'strategy'
                 ? 'bg-blue-50 text-blue-600 font-bold'
                 : 'text-slate-500 hover:text-slate-800'
@@ -132,8 +132,8 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
               {/* Executive Summary Narrative */}
               <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
                 <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                  <span>Ringkasan Eksekutif AI</span>
+                  <Lightbulb className="w-3.5 h-3.5 text-blue-600" />
+                  <span>Ringkasan Eksekutif Analis</span>
                 </h4>
                 <p className="text-xs text-slate-600 leading-relaxed">
                   {analysis.executiveSummary}
@@ -167,7 +167,7 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
               <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-4 text-xs text-amber-900 leading-relaxed flex items-start gap-2.5">
                 <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span>
-                  Ide konten ini dihasilkan AI berdasarkan analisis video-video yang meraih 500k+ views minggu ini di TikTok & Instagram Reels seputar jual-beli emas.
+                  Ide konten dirancang berdasarkan analisis video-video yang meraih 500k+ views minggu ini di TikTok & Instagram Reels seputar jual-beli emas.
                 </span>
               </div>
 
@@ -257,12 +257,12 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500 font-medium">
-          <span>AI Engine Aktif • Analisis Sentimen Real-Time</span>
+          <span>Sistem Analitik Aktif • Analisis Sentimen Real-Time</span>
           <button
             onClick={onClose}
-            className="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors"
+            className="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors cursor-pointer"
           >
-            Tutup Laporan AI
+            Tutup Laporan
           </button>
         </div>
       </div>

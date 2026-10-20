@@ -6,16 +6,16 @@ import { SocialListeningView } from './components/views/SocialListeningView';
 import { TrendSentimentView } from './components/views/TrendSentimentView';
 import { GoldMarketView } from './components/views/GoldMarketView';
 import { CompetitorView } from './components/views/CompetitorView';
-import { AIInsightsView } from './components/views/AIInsightsView';
+import { StrategicInsightsView } from './components/views/StrategicInsightsView';
 import { AlertsReportsView } from './components/views/AlertsReportsView';
 import { DataSettingsView } from './components/views/DataSettingsView';
 import { ApifyScraperModal } from './components/ApifyScraperModal';
 import { ViralFeedModal } from './components/ViralFeedModal';
-import { AIAnalysisModal } from './components/AIAnalysisModal';
+import { MarketInsightsModal } from './components/MarketInsightsModal';
 import { LoginPage } from './components/LoginPage';
 import { AuthService, AuthUser } from './services/authService';
 import { SupabaseService } from './services/supabaseService';
-import { AIAnalysisService, AIAnalysisResult } from './services/aiAnalysisService';
+import { MarketInsightsService, MarketInsightsResult } from './services/marketInsightsService';
 import { SocialTrendPost, HashtagStat } from './types';
 
 export const App: React.FC = () => {
@@ -27,8 +27,8 @@ export const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isScraperOpen, setIsScraperOpen] = useState<boolean>(false);
   const [isFeedOpen, setIsFeedOpen] = useState<boolean>(false);
-  const [isAIOpen, setIsAIOpen] = useState<boolean>(false);
-  const [isAIRefreshing, setIsAIRefreshing] = useState<boolean>(false);
+  const [isInsightsOpen, setIsInsightsOpen] = useState<boolean>(false);
+  const [isRefreshingInsights, setIsRefreshingInsights] = useState<boolean>(false);
 
   // 3. Live Production Data from Supabase
   const [posts, setPosts] = useState<SocialTrendPost[]>([]);
@@ -36,9 +36,9 @@ export const App: React.FC = () => {
   const [supabaseConnected, setSupabaseConnected] = useState<boolean>(true);
   const [latencyMs, setLatencyMs] = useState<number>(45);
 
-  // 4. AI Analysis State
-  const [aiAnalysis, setAiAnalysis] = useState<AIAnalysisResult>(() => 
-    AIAnalysisService.analyzeTrends([])
+  // 4. Strategic Market Insights State
+  const [marketAnalysis, setMarketAnalysis] = useState<MarketInsightsResult>(() => 
+    MarketInsightsService.analyzeTrends([])
   );
 
   // Load Real Data from Supabase
@@ -54,7 +54,7 @@ export const App: React.FC = () => {
 
     if (dbPosts && dbPosts.length > 0) {
       setPosts(dbPosts);
-      setAiAnalysis(AIAnalysisService.analyzeTrends(dbPosts));
+      setMarketAnalysis(MarketInsightsService.analyzeTrends(dbPosts));
     }
     if (dbHashtags && dbHashtags.length > 0) {
       setHashtags(dbHashtags);
@@ -95,12 +95,12 @@ export const App: React.FC = () => {
     setIsFeedOpen(true);
   };
 
-  const handleRefreshAI = () => {
-    setIsAIRefreshing(true);
+  const handleRefreshInsights = () => {
+    setIsRefreshingInsights(true);
     setTimeout(() => {
-      setAiAnalysis(AIAnalysisService.analyzeTrends(posts));
-      setIsAIRefreshing(false);
-    }, 500);
+      setMarketAnalysis(MarketInsightsService.analyzeTrends(posts));
+      setIsRefreshingInsights(false);
+    }, 450);
   };
 
   const handleExportCSV = () => {
@@ -130,7 +130,7 @@ export const App: React.FC = () => {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           openScraperModal={() => setIsScraperOpen(true)}
-          openAIModal={() => setIsAIOpen(true)}
+          openInsightsModal={() => setIsInsightsOpen(true)}
           supabaseConnected={supabaseConnected}
           latencyMs={latencyMs}
         />
@@ -141,7 +141,7 @@ export const App: React.FC = () => {
             posts={filteredPosts}
             hashtags={hashtags}
             onOpenFeed={() => setIsFeedOpen(true)}
-            onOpenAI={() => setIsAIOpen(true)}
+            onOpenInsights={() => setIsInsightsOpen(true)}
             onExport={handleExportCSV}
           />
         )}
@@ -168,12 +168,12 @@ export const App: React.FC = () => {
           <CompetitorView />
         )}
 
-        {activeTab === 'ai_insights' && (
-          <AIInsightsView
-            analysis={aiAnalysis}
+        {activeTab === 'insights' && (
+          <StrategicInsightsView
+            analysis={marketAnalysis}
             posts={filteredPosts}
-            onRefresh={handleRefreshAI}
-            isRefreshing={isAIRefreshing}
+            onRefresh={handleRefreshInsights}
+            isRefreshing={isRefreshingInsights}
           />
         )}
 
@@ -205,12 +205,12 @@ export const App: React.FC = () => {
         posts={filteredPosts}
       />
 
-      <AIAnalysisModal
-        isOpen={isAIOpen}
-        onClose={() => setIsAIOpen(false)}
-        analysis={aiAnalysis}
-        onRefresh={handleRefreshAI}
-        isRefreshing={isAIRefreshing}
+      <MarketInsightsModal
+        isOpen={isInsightsOpen}
+        onClose={() => setIsInsightsOpen(false)}
+        analysis={marketAnalysis}
+        onRefresh={handleRefreshInsights}
+        isRefreshing={isRefreshingInsights}
       />
     </div>
   );

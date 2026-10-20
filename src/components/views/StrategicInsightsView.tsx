@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import { Bot, Sparkles, Send, Lightbulb, CheckCircle2, AlertTriangle, Video, Tag, RefreshCw } from 'lucide-react';
-import { AIAnalysisResult } from '../../services/aiAnalysisService';
+import { Lightbulb, Send, CheckCircle2, AlertTriangle, Video, Tag, RefreshCw, MessageSquare } from 'lucide-react';
+import { MarketInsightsResult } from '../../services/marketInsightsService';
 import { SocialTrendPost } from '../../types';
 
-interface AIInsightsViewProps {
-  analysis: AIAnalysisResult;
+interface StrategicInsightsViewProps {
+  analysis: MarketInsightsResult;
   posts: SocialTrendPost[];
   onRefresh: () => void;
   isRefreshing?: boolean;
 }
 
-export const AIInsightsView: React.FC<AIInsightsViewProps> = ({
+export const StrategicInsightsView: React.FC<StrategicInsightsViewProps> = ({
   analysis,
   posts,
   onRefresh,
   isRefreshing = false
 }) => {
   const [query, setQuery] = useState<string>('');
-  const [chatHistory, setChatHistory] = useState<{ sender: 'user' | 'ai'; text: string; time: string }[]>([
+  const [chatHistory, setChatHistory] = useState<{ sender: 'user' | 'assistant'; text: string; time: string }[]>([
     {
-      sender: 'ai',
-      text: 'Halo! Saya asisten AI Market Intelligence. Anda bisa menanyakan apa saja tentang data tren media sosial, rasio sentimen beli/jual emas, atau meminta rekomendasi ide konten promosi.',
+      sender: 'assistant',
+      text: 'Halo! Saya asisten sistem Market Intelligence. Anda bisa menanyakan apa saja tentang data tren media sosial, rasio sentimen beli/jual emas, atau meminta rekomendasi strategi promosi toko.',
       time: 'Baru saja'
     }
   ]);
@@ -40,19 +40,19 @@ export const AIInsightsView: React.FC<AIInsightsViewProps> = ({
       const lower = userMsg.toLowerCase();
 
       if (lower.includes('beli') || lower.includes('jual') || lower.includes('sentimen')) {
-        reply = `Berdasarkan analisis terkini terhadap ${posts.length} postingan di Supabase, rasio sentimen saat ini adalah ${analysis.marketSentiment.bullishPercent}% Minat Beli (Bullish) dan ${analysis.marketSentiment.bearishPercent}% Tekanan Jual/Buyback. Pasar masih didominasi oleh minat akumulasi kepingan kecil.`;
+        reply = `Berdasarkan analisis terkini terhadap ${posts.length} postingan di database, rasio sentimen saat ini adalah ${analysis.marketSentiment.bullishPercent}% Minat Beli (Bullish) dan ${analysis.marketSentiment.bearishPercent}% Tekanan Jual/Buyback. Pasar masih didominasi oleh minat akumulasi kepingan kecil.`;
       } else if (lower.includes('hashtag') || lower.includes('tagar') || lower.includes('viral')) {
         reply = `Tiga tagar dengan jangkauan tertinggi saat ini adalah #hargaemas, #emasantam, dan #investasiemas dengan total jangkauan gabungan mencapai puluhan juta views di TikTok & Instagram Reels.`;
       } else if (lower.includes('ide') || lower.includes('konten') || lower.includes('video')) {
         reply = `Rekomendasi konten terbaik untuk toko emas Anda besok: Buat video berdurasi 30-45 detik yang menguji keaslian emas batangan Antam menggunakan aplikasi CertiEye dan timbangan digital mikro. Gunakan hook pembuka: "Jangan beli emas sebelum tahu 3 ciri keaslian ini!".`;
       } else if (lower.includes('buyback') || lower.includes('harga')) {
-        reply = `Peluang buyback saat ini sangat tinggi karena netizen mencari toko emas yang menawarkan buyback tanpa potongan liar dan proses timbangan terbuka. Anda disarankan mempromosikan layanan buyback kilat.`;
+        reply = `Peluang buyback saat ini sangat tinggi karena konsumen mencari toko emas yang menawarkan buyback tanpa potongan liar dan proses timbangan terbuka. Anda disarankan mempromosikan layanan buyback kilat.`;
       } else {
         reply = `Berdasarkan data terkini: Pasar emas di media sosial sedang dalam fase akumulasi positif. Topik paling hangat adalah emas batangan Antam pecahan 0.5g-1g dan perhiasan kadar 750 (17K). Ada hal spesifik lain yang ingin Anda ketahui?`;
       }
 
-      setChatHistory(prev => [...prev, { sender: 'ai', text: reply, time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) }]);
-    }, 400);
+      setChatHistory(prev => [...prev, { sender: 'assistant', text: reply, time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) }]);
+    }, 350);
   };
 
   return (
@@ -61,10 +61,10 @@ export const AIInsightsView: React.FC<AIInsightsViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-soft">
         <div>
           <h2 className="text-xl font-bold text-slate-800 tracking-tight">
-            AI Insights & Recommendations
+            Strategic Insights & Recommendations
           </h2>
           <p className="text-xs text-slate-500 font-medium mt-1">
-            Mengubah data mentah media sosial menjadi saran tindakan praktis dan tanya data dengan bahasa natural
+            Mengubah data mentah media sosial menjadi saran tindakan praktis dan konsultasi data tren pasar
           </p>
         </div>
         <button
@@ -73,18 +73,18 @@ export const AIInsightsView: React.FC<AIInsightsViewProps> = ({
           className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl text-xs font-bold shadow-md shadow-blue-500/20 transition-all cursor-pointer shrink-0 disabled:opacity-60"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-          <span>{isRefreshing ? 'Menganalisis...' : 'Perbarui Analisis AI'}</span>
+          <span>{isRefreshing ? 'Menganalisis...' : 'Perbarui Analisis'}</span>
         </button>
       </div>
 
-      {/* Row 1: AI Daily Brief & Deteksi Risiko Reputasi */}
+      {/* Row 1: Daily Brief & Deteksi Risiko Reputasi */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Daily Brief */}
         <div className="md:col-span-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 rounded-3xl shadow-sm flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] font-bold uppercase tracking-wider text-blue-200">
-                AI-Generated Daily Brief
+                Daily Market Intelligence Brief
               </span>
               <span className="text-xs font-semibold text-blue-200">
                 Update: {analysis.generatedAt}
@@ -130,16 +130,16 @@ export const AIInsightsView: React.FC<AIInsightsViewProps> = ({
         </div>
       </div>
 
-      {/* Row 2: Tanya Data Menggunakan Bahasa Natural (AI Chat Query) */}
+      {/* Row 2: Tanya Data Menggunakan Bahasa Natural (Konsultasi Cerdas) */}
       <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-soft space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
-              <Bot className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-800">Tanya Data Menggunakan Bahasa Natural</h3>
-              <p className="text-[11px] text-slate-400">Tanyakan performa hashtag, sentimen beli/jual, atau saran konten kapan saja</p>
+              <h3 className="text-sm font-bold text-slate-800">Pencarian & Tanya Jawab Data Pasar</h3>
+              <p className="text-[11px] text-slate-400">Tanyakan performa hashtag, sentimen beli/jual, atau saran konten promosi kapan saja</p>
             </div>
           </div>
         </div>

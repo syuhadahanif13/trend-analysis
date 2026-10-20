@@ -99,9 +99,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <Sparkles className="w-4 h-4 text-amber-500 group-hover:rotate-12 transition-transform" />
                 <span className="font-semibold">AI Market Insights</span>
               </div>
-              <span className="text-[10px] font-bold bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 px-1.5 py-0.5 rounded-full shadow-2xs">
-                FREE
-              </span>
             </button>
           </nav>
         </div>

@@ -27,7 +27,7 @@ export interface AIAnalysisResult {
 
 export class AIAnalysisService {
   /**
-   * Run free AI Trend & Market Analysis based on current active posts from Supabase
+   * Run AI Trend & Market Analysis based on current active posts from Supabase
    */
   static analyzeTrends(posts: SocialTrendPost[]): AIAnalysisResult {
     const total = posts.length || 1;

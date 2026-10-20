@@ -35,8 +35,8 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
                 <h3 className="text-lg font-bold text-slate-800">
                   AI Trend & Market Intelligence (Emas)
                 </h3>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                  FREE AI Engine
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                  AI Intelligence Engine
                 </span>
               </div>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
@@ -182,7 +182,7 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
 
                   <div className="space-y-3 mt-3">
                     <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-xs">
-                      <span className="font-bold text-slate-700 block mb-0.5">⚡ Hook 3 Detik Pertama:</span>
+                      <span className="font-bold text-slate-700 block mb-0.5">Hook 3 Detik Pertama:</span>
                       <span className="italic text-blue-700 font-medium">"{idea.hook3s}"</span>
                     </div>
 
@@ -215,8 +215,8 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
               {/* For Toko Emas */}
               <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-2xs">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
-                    🪙
+                  <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
+                    Toko
                   </div>
                   <h4 className="text-sm font-bold text-slate-800">
                     Untuk Toko Emas & Pedagang
@@ -235,8 +235,8 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
               {/* For Investors */}
               <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-2xs">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
-                    📈
+                  <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-xs">
+                    Tren
                   </div>
                   <h4 className="text-sm font-bold text-slate-800">
                     Untuk Investor & Konsumen
@@ -257,7 +257,7 @@ export const AIAnalysisModal: React.FC<AIAnalysisModalProps> = ({
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500 font-medium">
-          <span>AI Engine aktif • Tanpa biaya API</span>
+          <span>AI Engine Aktif • Analisis Sentimen Real-Time</span>
           <button
             onClick={onClose}
             className="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors"

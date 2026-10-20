@@ -59,13 +59,13 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-2.5">
-        {/* AI Analysis Free Button */}
+        {/* AI Analysis Button */}
         <button
           onClick={openAIModal}
           className="flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-full text-xs font-bold shadow-sm shadow-amber-500/20 transition-all active:scale-95 cursor-pointer"
         >
           <Bot className="w-3.5 h-3.5" />
-          <span>AI Insights (Free)</span>
+          <span>AI Insights</span>
         </button>
 
         {/* Scraper Trigger Action Button */}

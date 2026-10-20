@@ -74,7 +74,7 @@ export const ApifyScraperModal: React.FC<ApifyScraperModalProps> = ({
       addLog('Menyimpan hasil ke database Supabase...');
       const savedToSupabase = await SupabaseService.upsertTrendPosts(results);
       if (savedToSupabase) {
-        addLog('✓ Berhasil disinkronisasi ke tabel Supabase "trend_posts"');
+        addLog('Berhasil disinkronisasi ke tabel Supabase "trend_posts"');
       }
 
       await SupabaseService.recordScraperRun(hashtags, results.length, 'completed', currentLogs);
